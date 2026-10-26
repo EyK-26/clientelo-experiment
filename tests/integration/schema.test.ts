@@ -25,7 +25,7 @@ test("native migration and fresh rebuild leave only worksheet schema and no appl
       await db.unsafe(`CREATE SCHEMA ${schemaIdentifier}`);
       await db.unsafe(`SET LOCAL search_path TO ${schemaIdentifier}`);
       await migrateDatabase(db, migrations);
-      const tables = async () => (await db.unsafe<{ tablename: string }>(
+      const tables = async () => (await db.unsafe<Array<{ tablename: string }>>(
         "SELECT tablename FROM pg_tables WHERE schemaname=current_schema() ORDER BY tablename",
       )).map(row => row.tablename);
       expect(await tables()).toEqual(expectedTables);

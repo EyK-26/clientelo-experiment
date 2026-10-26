@@ -3,9 +3,11 @@ import { defineTable } from "@getstrata/core/database/table";
 
 // Installed-consumer handoff: @getstrata/core 2.2.59, TypeScript 7.0.2, Bun 1.4.4.
 // Run from this repo (no database, credentials or app imports needed):
+// cp tests/support/relationship-types.repro.ts.txt tests/support/relationship-types.repro.ts
 // bun ./node_modules/.bin/tsc --ignoreConfig --noEmit --strict --skipLibCheck \
 //   --module ESNext --moduleResolution bundler --target ES2022 --types bun \
 //   --allowImportingTsExtensions tests/support/relationship-types.repro.ts
+// rm tests/support/relationship-types.repro.ts
 //
 // Current result: two TS2345 diagnostics for inferred foreign keys, plus four
 // TS2578 diagnostics because relation filters accept invalid columns/values.
@@ -14,7 +16,8 @@ import { defineTable } from "@getstrata/core/database/table";
 // below compile; ordinary-model negative controls reject bad input correctly.
 // Provisional classification: relationship typing/DX gap; runtime relationships
 // pass the PostgreSQL integration tests. This diagnostic intentionally fails
-// compilation and is not part of the normal passing application check.
+// compilation. Stored as text to avoid intentional IDE diagnostics. The temporary
+// .ts copy is excluded from the normal application-and-tests project check.
 // No framework change or app-side replacement type wrapper is proposed here.
 
 interface ContactRecord {

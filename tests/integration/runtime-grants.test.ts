@@ -17,11 +17,11 @@ test("narrow runtime grants quote valid reserved role names and reject SQL fragm
       .rejects.toThrow("Invalid runtime role name");
 
     await applyRuntimeGrants(owner, "select");
-    const [rights] = await owner.unsafe<{
+    const [rights] = await owner.unsafe<Array<{
       can_read: boolean; can_insert: boolean; can_update: boolean;
       can_delete: boolean; can_truncate: boolean; can_create: boolean;
       can_use_schema: boolean; can_read_history: boolean;
-    }>(`
+    }>>(`
       SELECT has_table_privilege($1,'worksheet_contact','SELECT') AS can_read,
         has_table_privilege($1,'worksheet_contact','INSERT') AS can_insert,
         has_table_privilege($1,'worksheet_contact','UPDATE') AS can_update,

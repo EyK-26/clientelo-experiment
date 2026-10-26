@@ -77,6 +77,8 @@ bun --env-file=.private/environments/.env.test run test:browser:serve
 ```
 
 Run database suites sequentially and stop the browser fixture before another suite.
+`bun run check` typechecks application code and TypeScript tests. The intentionally
+failing framework type reproduction is stored as a text fixture under tests/support.
 Use `bun run test` for unit tests; do not run recursive `bun test tests`, which would
 mix database fixtures. Automated browser instructions are in
 [tests/browser/worksheet.mjs](tests/browser/worksheet.mjs).

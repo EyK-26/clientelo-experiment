@@ -12,6 +12,7 @@ await owner.unsafe(
   "GRANT SELECT, INSERT, UPDATE ON worksheet_contact,worksheet_event,worksheet_journey_event TO clientelo_native_runtime",
 );
 delete process.env.MIGRATION_DATABASE_URL;
+delete process.env.RETENTION_DATABASE_URL;
 Object.assign(process.env, {
   APP_ENV: "test",
   APP_URL: "http://127.0.0.1:4335",

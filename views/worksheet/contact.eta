@@ -1,5 +1,5 @@
 <section class="contact-card" id="contact-step" aria-labelledby="contact-heading">
-  <% if (it.qualification) { %><p class="notice">V této ukázce použijte pouze vymyšlenou adresu s koncovkou @example.test. Skutečné adresy nepřijímáme.</p><% } %>
+  <% if (it.qualification) { %><p class="contact-demo">Ukázka · použijte pouze vymyšlenou adresu <strong>@example.test</strong>.</p><% } %>
   <% if (it.resource) { %>
     <div role="status"><h2 id="contact-heading" tabindex="-1"><%= it.qualification ? 'Ukázkovou žádost jsme uložili. Pracovní list je připravený.' : 'Kontakt jsme přijali. Pracovní list je připravený.' %></h2>
       <p>Nic vám nepošleme. Uložení adresy nepotvrzuje, komu patří.</p>
@@ -7,8 +7,10 @@
       <p>Odkaz platí 10 minut. Po vypršení se vraťte k formuláři a požádejte o nový. Pracovní list můžete vytisknout nebo uložit do PDF.</p>
     </div>
   <% } else { %>
-    <h2 id="contact-heading"><%= it.qualification ? 'Celý pracovní list po uložení ukázkové žádosti' : 'Celý pracovní list hned po přijetí kontaktu' %></h2>
-    <p>Jde o osobní demonstrační projekt. Adresu dočasně zaznamenáme pro evidenci žádostí a vyhodnocení ukázky. Žádný newsletter ani e-mail neposíláme.</p>
+    <p class="eyebrow">PŘEHLED K TISKU A ULOŽENÍ</p>
+    <h2 id="contact-heading">Srovnání a otázky pro brokera v jednom listu.</h2>
+    <p>Po přijetí žádosti otevřete celý pracovní list přímo tady. Žádný newsletter ani e-mail neposíláme.</p>
+    <% if (it.qualification) { %><p class="section-note">Vymyšlenou adresu dočasně uložíme jen pro test tohoto postupu. Skutečné kontakty nepřijímáme.</p><% } %>
     <% if (it.notice) { %>
       <p><strong>Správce:</strong> <%= it.notice.operator %> · <%= it.notice.privacyContact %><br>
         <%= it.notice.purpose %><br>
@@ -22,7 +24,7 @@
       <label for="worksheet-email"><%= it.qualification ? 'Vymyšlená e-mailová adresa' : 'Váš e-mail' %></label>
       <input id="worksheet-email" name="email" type="email" inputmode="email" autocomplete="<%= it.qualification ? 'off' : 'email' %>" required maxlength="254" value="<%= it.email %>" aria-describedby="form-status" <% if (it.error) { %>aria-invalid="true" autofocus<% } %>>
       <p id="form-status" role="status" aria-live="polite" tabindex="-1"><%= it.error %></p>
-      <button type="submit">Uložit žádost a otevřít list</button>
+      <button type="submit">Otevřít celý pracovní list</button>
       <noscript><p>Formulář funguje i bez JavaScriptu. Vyčkejte na odpověď serveru; při chybě zůstane zadaná adresa ve formuláři.</p></noscript>
     </form>
   <% } %>

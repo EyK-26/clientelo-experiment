@@ -9,7 +9,7 @@ Native Czech/creative approval and real public contact release remain pending.
   and actual worksheet sample. No best-fund, return or savings promise.
 - **B — access before buying:** [ad-b.svg](ad-b.svg). Is a listed ETF available through
   your broker? Same pair/worksheet CTA; matches the prominent access qualification
-  and question2. It does not promise account verification or a workaround.
+  and the product-identity example/checklist topics. It does not promise account verification or a workaround.
 
 Both are educational personal-demonstration drafts, identify NYSE Arca and warn that
 access depends on broker/account/KID. No newsletter or email-delivery promise. The

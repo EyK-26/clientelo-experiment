@@ -1,0 +1,17 @@
+<div class="expense-example">
+  <div class="example-heading">
+    <span class="eyebrow">MODELOVÝ ROČNÍ PŘEPOČET</span>
+    <h3>Při hodnotě <%= it.worksheet.expenseExample.valueLabel %></h3>
+  </div>
+  <dl class="example-costs">
+    <% for (const fund of it.worksheet.expenseExample.funds) { %>
+    <div>
+      <dt><%= fund.ticker %> · <%= fund.rateLabel %></dt>
+      <dd><strong><%= fund.annualLabel %></strong> <span>za rok</span></dd>
+      <dd class="example-formula"><%= it.worksheet.expenseExample.valueLabel %> × <%= fund.rateLabel %></dd>
+      <dd><a href="<%= it.data.sources[fund.source].url %>">Zdroj sazby, <%= it.date(fund.asOf) %></a></dd>
+    </div>
+    <% } %>
+  </dl>
+  <p class="example-assumptions">Zjednodušený přepočet: hodnota odpovídá stejné částce v Kč po celý rok, kurz i sazba se nemění. Nejde o předpověď výnosu ani částku účtovanou brokerem. Provize, směna měny, spread a daně nejsou zahrnuté; skutečný výsledek se může lišit.</p>
+</div>

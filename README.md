@@ -25,8 +25,10 @@ is involved.
 ## How it works
 
 The page compares two S&P 500 ETFs for Czech beginners. Essential facts and access
-limitations are public. The full worksheet adds six broker questions, space for answers
-and sources, a glossary, fund identities and a draft message to a broker.
+limitations are public. Before capture, a worked fee example and a sourced product-identity
+answer demonstrate the resource, and all six checklist topics are visible. The full
+printable worksheet brings the comparison and example together with six broker questions,
+space for answers and sources, a glossary and a draft message to a broker.
 
 The app uses native Strata startup, routing, validation, Eta views, cookies/CSRF,
 signed URLs, ORM repositories, transactions and migrations. Atomic database operations
@@ -60,23 +62,46 @@ bun run start
 Use a restricted database connection and matching application/CSRF origins. The default
 configuration keeps capture disabled. No mail configuration is needed.
 
-For the complete local synthetic journey, use the browser fixture below. Database
-tests require an isolated loopback database named `clientelo_native_test` and separate
-runtime, migration and deletion credentials in ignored local environment files.
+Unit tests and typecheck need no database or private environment files:
 
 ```sh
 bun run test
 bun run check
-bun --env-file=.private/environments/.env.test --env-file=.private/environments/.env.retention-test run test:integration
-
-docker build -t investicni-prehled:demo .
-bun --env-file=.private/environments/.env.test run test:container
-
-bun --env-file=.private/environments/.env.test run test:browser:serve
-# Open http://127.0.0.1:4335/etf; Ctrl+C cleans up the fixture.
 ```
 
-Run database suites sequentially and stop the browser fixture before another suite.
+For integration tests and the complete synthetic browser journey, use the supplied
+disposable PostgreSQL container (Docker Compose required):
+
+```sh
+cp .env.test.example .env.test
+docker compose -f compose.test.yaml up -d --wait
+bun --no-env-file --env-file=.env.test run test:integration
+
+docker build -t investicni-prehled:demo .
+bun --no-env-file --env-file=.env.test run test:container
+
+bun --no-env-file --env-file=.env.test run test:browser:serve
+# Open http://127.0.0.1:4335/etf; Ctrl+C cleans up the fixture.
+
+# After stopping the browser fixture:
+docker compose -f compose.test.yaml down
+```
+
+The database is published only on `127.0.0.1:55432` and uses memory-backed disposable
+storage. The deliberately public test passwords in `.env.test.example` are valid only
+for this container. Never reuse them on a hosted service. Stopping the database container
+discards its test data; no hosted URL, account or secret is needed.
+
+The local owner/admin identity exists only to set up fixture schemas and exercise role
+administration tests. Runtime and retention roles are separate and nonadministrative.
+Native Strata fixtures create the application tables; the SQL initialization file only
+creates these local roles and schema privileges. The browser harness removes owner and
+retention URLs from its environment before booting the application. Runtime receives no
+mail or hosting credentials. The committed production `.env.example` remains separate.
+
+Run database suites sequentially and stop the browser fixture before another suite;
+they create and remove their own tables in `clientelo_native_test`. A port conflict
+should be resolved before startup, without repointing the tests at another database.
 `bun run check` typechecks application code and TypeScript tests. The intentionally
 failing framework type reproduction is stored as a text fixture under tests/support.
 Use `bun run test` for unit tests; do not run recursive `bun test tests`, which would
@@ -121,8 +146,16 @@ Fund-sheet snapshots are dated **30 September 2026**, retrieved **25 October 202
 documents and broker KID policy. Account-specific purchase access remains unverified.
 
 The section order is: demo/wake notice → headline and preview action → access warning →
-comparison → worksheet sample → full-resource value → disclosed synthetic form → sources.
-Visitors see the benefit and caveats before being asked for an address.
+comparison → worked expense and product-identity examples → all six checklist topics →
+disclosed synthetic form → sources and complete demo/hosting details. A compact reviewer
+strip links to the complete disclosure, leaving room for the actual benefit and action
+on mobile. Essential access warnings stay public and precede capture.
+
+The static fee example applies each sourced annual percentage to an unchanged CZK-equivalent
+value of 100,000: SPY 94.50 and VOO 30.00 per year. It assumes unchanged value, exchange rate
+and fee. It is neither a return forecast nor a broker charge or all-in cost estimate;
+commissions, conversion, spread and taxes are excluded. The same calculated content is
+rendered in the preview and printable resource; fee data is not duplicated.
 
 Both unpublished advertisements match the page: [A — compare beyond the index](ads/ad-a.svg)
 and [B — check broker access](ads/ad-b.svg). [Attribution links](ads/README.md) distinguish
@@ -163,3 +196,21 @@ collection purpose, access and retention arrangements. Render's wake delay remai
 conversion limitation. Native Czech approval, physical-phone testing and account-specific
 broker access are unverified. Synthetic checks are not campaign results, email
 verification, physical printing or advertising-readiness evidence.
+
+The current local refinement passed 37 unit tests, 36 sequential integration tests,
+typecheck and the production-container checks using only the supplied disposable setup.
+Browser inspection covered 360/390/430px and desktop, including retained input,
+controlled response loss, safe retry and the revised resource. The primary action is
+visible without scrolling at 360px. Native print was invoked, but saving and inspecting
+a new PDF was not completed through the available browser controls. This local revision
+has not been pushed or deployed; earlier hosted observations are not proof of these changes.
+
+The interface now explains the requested resource and immediate web fulfillment, but
+it does not invent an operator identity, permission to contact people later or a legal
+basis for collecting real addresses. Those decisions remain required before a public
+lead release. No marketing enrollment or email-delivery promise is introduced.
+
+Render's initial wake page is served before this application's code runs. Changing CSS,
+form feedback or moving disclosures cannot remove that platform delay. This pass keeps
+the existing free host and adds no keepalive traffic, paid plan or unqualified hosting
+replacement. Public acquisition performance remains an explicit limitation.

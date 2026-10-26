@@ -6,6 +6,7 @@
   <p class="screen-only">V dialogu tisku vyberte „Uložit jako PDF“, formát A4 a vypněte záhlaví a zápatí prohlížeče. Bez JavaScriptu použijte Ctrl+P nebo ⌘P. Tisknutí neověřuje možnost fond koupit.</p>
   <p class="notice">Vzdělávací pomůcka. Nejde o doporučení k nákupu, úplný seznam rizik ani potvrzení dostupnosti pro váš účet. Nový nákup může být omezen podmínkami brokera a dokumentem KID.</p>
   <div class="funds"><% for (const fund of it.data.funds) { %><article><h2><%= fund.ticker %></h2><p><%= fund.name.value %><br>Index: <%= fund.benchmark.value %><br>Roční nákladový poměr: <strong><%= fund.expense.value.replace('.', ',') %> %</strong><br>Primární burza: <%= fund.venue.value %><br>CUSIP: <%= fund.cusip.value %></p><small><%= fund.expense.basis %><br><a href="<%= it.data.sources[fund.expense.source].url %>">Přehled emitenta, <%= it.date(fund.expense.asOf) %></a><br><a href="<%= it.data.sources[fund.venue.source].url %>">Kotace, stav <%= it.date(fund.venue.asOf) %></a></small></article><% } %></div>
+  <%~ include("partials/expense-example.eta") %>
   <h2>Čtyři pojmy bez zkratek navíc</h2><dl class="glossary"><% for (const term of it.worksheet.terms) { %><div><dt><%= term.title %></dt><dd><%= term.text %></dd></div><% } %></dl>
   <p><small>Zdroje ověřeny 25. 10. 2026. Přehledy nákladů k 30. 9. 2026; samostatná data účinnosti poplatků nejsou v podkladech sjednocená.</small></p>
 </section>

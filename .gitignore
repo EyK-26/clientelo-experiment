@@ -1,6 +1,3 @@
-# Local operator credentials and recovery snapshots. Never commit or package these.
-/.private/
-
 # Native Strata application artifacts and local configuration.
 node_modules
 .env
@@ -14,5 +11,9 @@ storage/*.sqlite-shm
 coverage
 *.tsbuildinfo
 
+# Generated local browser screenshots and print artifacts.
+/.private/browser-review/
+
 .env.*
 !.env.example
+!.env.test.example

@@ -42,16 +42,22 @@ try {
     );
     const layout = await page.evaluate(() => ({
       width: innerWidth,
+      contentWidth: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
-      heroActions: document.querySelectorAll(".hero > .action").length,
+      heroActions: document.querySelectorAll("[data-primary-action]").length,
       buttonHeight: document
-        .querySelector(".hero > .action")
+        .querySelector("[data-primary-action]")
         .getBoundingClientRect().height,
+      buttonBottom: document.querySelector("[data-primary-action]").getBoundingClientRect().bottom,
+      buttonTop: document.querySelector("[data-primary-action]").getBoundingClientRect().top,
+      viewportHeight: innerHeight,
     }));
     assert.equal(layout.width, width);
-    assert.equal(layout.scrollWidth, width);
+    assert.equal(layout.scrollWidth, layout.contentWidth);
     assert.equal(layout.heroActions, 1);
     assert(layout.buttonHeight >= 48);
+    assert(layout.buttonTop >= 0);
+    assert(layout.buttonBottom <= layout.viewportHeight, "primary action must be visible without scrolling");
     observations.layouts.push(layout);
     await page.screenshot({
       path: evidence + `product-${width}-2026-10-26.jpg`,

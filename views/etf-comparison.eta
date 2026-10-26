@@ -1,111 +1,114 @@
 <% if (it.qualification) { %>
-  <aside class="notice screen-only" aria-label="Ukázka pro hodnocení">
-    <strong>Ukázka pro hodnocení · pouze vymyšlené adresy</strong>
-    <p>Vymyslete adresu s koncovkou @example.test. Nic na ni neposíláme a neověřujeme, komu patří. Záznam slouží jen k
-      testu, ne k obchodnímu oslovení.</p>
-    <p>Hostovaná ukázka na bezplatném Renderu se po nečinnosti uspává. Načítání může trvat přibližně minutu; ukázka není
-      připravena pro reklamní provoz.</p>
-  </aside>
-  <% } %>
-    <section class="hero" aria-labelledby="page-heading">
-      <p class="eyebrow">VZDĚLÁVACÍ SROVNÁNÍ · SPY / VOO</p>
-      <h1 id="page-heading">SPY a VOO: stejný index. Co porovnat dál?</h1>
-      <p class="hero-benefit">Porovnejte průběžné náklady obou fondů. V pracovním listu najdete šest otázek pro ověření
-        podmínek nákupu u brokera.</p>
-      <a class="action" href="#worksheet-preview">Prohlédnout ukázku pracovního listu</a>
-      <aside class="notice access-warning" aria-labelledby="access-heading">
-        <strong id="access-heading">Nejdřív ověřte, zda můžete fond koupit</strong>
-        <p>Kotace na NYSE Arca nezaručuje dostupnost pro českého drobného investora. LYNX popisuje omezení nových nákupů
-          amerických ETF bez požadovaného dokumentu KID.</p>
-        <p><strong>SPY ani VOO pro váš účet nemáme ověřené.</strong> Pravidla se mohou lišit podle brokera a klasifikace
-          klienta. <a href="<%= it.data.sources.lynxPolicy.url %>">Podmínky KID podle LYNX</a></p>
-      </aside>
-    </section>
-    <section aria-labelledby="comparison">
-      <h2 id="comparison">Stejný index. Dva konkrétní fondy.</h2>
-      <p>Nákladový poměr sám neurčuje, který fond je pro vás vhodný. Nezahrnuje všechny náklady vašeho obchodu.</p>
-      <div class="funds">
-        <% for (const fund of it.data.funds) { %>
-          <article>
-            <h3>
-              <%= fund.ticker %>
-            </h3>
-            <p class="fund-name">
-              <%= fund.name.value %>
-            </p>
-            <dl>
-              <dt>Sledovaný index</dt>
-              <dd>
-                <%= fund.benchmark.value %> · <a href="<%= it.data.sources[fund.benchmark.source].url %>">zdroj</a>
-              </dd>
-              <dt>Roční nákladový poměr</dt>
-              <dd class="expense">
-                <%= fund.expense.value.replace('.', ',' ) %> %
-              </dd>
-              <dd><small>
-                  <%= fund.expense.basis %> <a href="<%= it.data.sources[fund.expense.source].url %>">Přehled k <%=
-                        it.date(fund.expense.asOf) %></a>
-                </small></dd>
-              <dt>Dostupnost pro váš účet</dt>
-              <dd>Neověřeno. Ověřte přesný produkt a podmínky nového nákupu u svého brokera.</dd>
-              <dt>Primární burza</dt>
-              <dd>
-                <%= fund.venue.value %> · <a href="<%= it.data.sources[fund.venue.source].url %>">zdroj, stav <%=
-                      it.date(fund.venue.asOf) %></a>
-              </dd>
-            </dl>
-            <details>
-              <summary>Přesná identita pro dotaz brokerovi</summary>
-              <p>CUSIP: <%= fund.cusip.value %> · <a href="<%= it.data.sources[fund.cusip.source].url %>">zdroj</a></p>
-              <p><a href="<%= it.data.sources[fund.name.source].url %>">Název podle emitenta, <%=
-                    it.date(fund.name.asOf) %></a></p>
-            </details>
-          </article>
-          <% } %>
-      </div>
-      <p><small>Oba přehledy nákladů jsou k 30. 9. 2026. Neznamená to stejné datum účinnosti poplatků ani totožnou
-          definici ukazatele. Zdroje ověřeny 25. 10. 2026. NYSE Arca patří do NYSE Group; primární kotace neurčuje místo
-          provedení vašeho obchodu.</small></p>
-    </section>
-    <section aria-labelledby="worksheet-preview">
-      <p class="eyebrow">SKUTEČNÁ UKÁZKA Z PRACOVNÍHO LISTU</p>
-      <h2 id="worksheet-preview">Od srovnání ke konkrétní otázce</h2>
-      <div class="preview question-sample">
-        <p class="sample-number">Otázka 2 ze 6 · <%= it.worksheet.questions[1].title %>
-        </p>
-        <h3>
-          <%= it.worksheet.questions[1].text %>
-        </h3>
-        <div class="answer">Odpověď: zatím neověřeno<br>Zdroj: doplňte odkaz nebo dokument<br>Datum ověření: doplňte
-        </div>
-      </div>
-      <h3>Co přidává celý pracovní list</h3>
-      <p>Šest otázek s místem pro odpovědi, zdroje a datum. K tomu čtyři vysvětlené pojmy, přesná identita obou fondů a
-        text dotazu, který upravíte pro svého brokera. List si vytisknete nebo uložíte do PDF.</p>
-      <p>Podobný název nebo stejný index nestačí: ověřte, zda broker nabízí skutečný fond ETF. CFD je jiný nástroj; list
-        není návodem k obcházení omezení.</p>
-    </section>
-    <% if (it.contactEnabled) { %>
-      <%~ include("worksheet/contact.eta") %>
-        <% } else { %>
-          <section class="notice" id="contact-step">
-            <h2>Toto je pouze náhled srovnání</h2>
-            <p>Projděte si fakta a ukázku pracovního listu bez zadávání údajů. <a
-                href="https://clientelo-experiment.onrender.com/etf">Celý postup s vymyšlenou adresou vyzkoušíte v
-                ukázce pro hodnocení</a>. Skutečné adresy nepřijímáme a nic neposíláme. Bezplatný hosting se po
-              nečinnosti probouzí; načítání může trvat přibližně minutu.</p>
-          </section>
-          <% } %>
-            <section class="sources" aria-labelledby="sources-heading">
-              <h2 id="sources-heading">Zdroje a hranice ověření</h2>
-              <ul>
-                <% for (const source of Object.values(it.data.sources)) { %>
-                  <li><a href="<%= source.url %>">
-                      <%= source.label %>
-                    </a><br>Stav podkladu: <%= it.date(source.asOf) %>; ověřeno: <%= it.date(source.retrievedOn) %>.
-                  </li>
-                  <% } %>
-              </ul>
-              <p>Neověřili jsme váš účet ani možnost provést nákup SPY nebo VOO. Toto srovnání nehodnotí vaši finanční
-                situaci ani vhodnost investice.</p>
-            </section>
+<aside class="reviewer-bar screen-only" aria-label="Ukázka pro hodnocení">
+  <strong>Ukázka</strong>
+  <p>Pouze vymyšlené adresy <b>@example.test</b>. <a href="#demo-details">Načítání a podmínky</a></p>
+</aside>
+<% } %>
+
+<section class="hero" aria-labelledby="page-heading">
+  <div class="hero-copy">
+    <p class="eyebrow">VZDĚLÁVACÍ SROVNÁNÍ · SPY / VOO</p>
+    <h1 id="page-heading">SPY a VOO: stejný index. Co porovnat dál?</h1>
+    <p class="hero-benefit">Pochopte náklady na konkrétním příkladu. Přehled obou fondů a šest otázek pro brokera si pak uložte do PDF.</p>
+    <a class="action primary-action" data-primary-action href="#comparison">Prohlédnout srovnání</a>
+    <p class="hero-meta">Srovnání a ukázka jsou volně dostupné. Celý list se otevře po přijetí žádosti s e-mailem.</p>
+  </div>
+  <div class="hero-proof" aria-label="Nákladové poměry porovnávaných fondů">
+    <p class="eyebrow">STEJNÝ INDEX · S&amp;P 500</p>
+    <dl class="hero-fees">
+      <% for (const fund of it.data.funds) { %>
+      <div><dt><%= fund.ticker %></dt><dd><%= fund.expense.value.replace('.', ',') %> <span>%</span></dd></div>
+      <% } %>
+    </dl>
+    <p>Roční nákladový poměr fondu, nikoli celkové náklady investora.</p>
+    <a href="#sources-heading">Podklady k 30. 9. 2026 a zdroje</a>
+  </div>
+</section>
+
+<aside class="notice access-warning" aria-labelledby="access-heading">
+  <strong id="access-heading">Nejdřív ověřte dostupnost pro svůj účet.</strong>
+  <p>Kotace na NYSE Arca nezaručuje, že český drobný investor může SPY nebo VOO koupit. Dostupnost pro váš účet nemáme ověřenou. <a href="<%= it.data.sources.lynxPolicy.url %>">LYNX vysvětluje omezení spojená s dokumentem KID.</a></p>
+</aside>
+
+<section aria-labelledby="comparison">
+  <p class="eyebrow">FAKTA PŘED ROZHODNUTÍM</p>
+  <h2 id="comparison">Stejný index. Dva konkrétní fondy.</h2>
+  <p>Nákladový poměr sám neurčuje vhodnost fondu. Nezahrnuje provizi brokera, směnu měny ani rozdíl nákupní a prodejní ceny.</p>
+  <div class="funds">
+    <% for (const fund of it.data.funds) { %>
+    <article>
+      <h3><%= fund.ticker %></h3>
+      <p class="fund-name"><%= fund.name.value %></p>
+      <dl>
+        <dt>Sledovaný index</dt>
+        <dd><%= fund.benchmark.value %> · <a href="<%= it.data.sources[fund.benchmark.source].url %>">zdroj</a></dd>
+        <dt>Roční nákladový poměr</dt>
+        <dd class="expense"><%= fund.expense.value.replace('.', ',') %> %</dd>
+        <dd><small><%= fund.expense.basis %> <a href="<%= it.data.sources[fund.expense.source].url %>">Přehled k <%= it.date(fund.expense.asOf) %></a></small></dd>
+        <dt>Primární burza</dt>
+        <dd><%= fund.venue.value %> · <a href="<%= it.data.sources[fund.venue.source].url %>">zdroj, stav <%= it.date(fund.venue.asOf) %></a></dd>
+      </dl>
+      <details>
+        <summary>Přesná identita pro dotaz brokerovi</summary>
+        <p>CUSIP: <%= fund.cusip.value %> · <a href="<%= it.data.sources[fund.cusip.source].url %>">zdroj</a></p>
+        <p><a href="<%= it.data.sources[fund.name.source].url %>">Název podle emitenta, <%= it.date(fund.name.asOf) %></a></p>
+      </details>
+    </article>
+    <% } %>
+  </div>
+  <p class="section-note">Oba přehledy nákladů jsou k 30. 9. 2026; nemusí mít stejné datum účinnosti poplatků ani totožnou definici ukazatele. Zdroje ověřeny 25. 10. 2026. NYSE Arca patří do NYSE Group; primární kotace neurčuje místo provedení obchodu.</p>
+</section>
+
+<section aria-labelledby="worksheet-preview">
+  <p class="eyebrow">UKÁZKA Z PŘEHLEDU K ULOŽENÍ</p>
+  <h2 id="worksheet-preview">Procenta převedená na srozumitelný příklad.</h2>
+  <%~ include("partials/expense-example.eta") %>
+
+  <div class="preview identity-example">
+    <p class="eyebrow">VYPLNĚNÁ UKÁZKA · PŘESNÝ PRODUKT</p>
+    <h3><%= it.worksheet.questions[0].text %></h3>
+    <p>Porovnáváme tyto dva fondy ETF. Pro dotaz brokerovi už máte dohledané jejich přesné názvy a identifikátory:</p>
+    <ul>
+      <% for (const fund of it.data.funds) { %>
+      <li><strong><%= fund.ticker %></strong> · <%= fund.name.value %><br>CUSIP <%= fund.cusip.value %> · <a href="<%= it.data.sources[fund.cusip.source].url %>">doklad emitenta, <%= it.date(fund.cusip.asOf) %></a></li>
+      <% } %>
+    </ul>
+    <p class="section-note">Přesná identita produktu nepotvrzuje možnost nového nákupu přes váš účet. CFD je jiný nástroj; list není návodem k obcházení omezení.</p>
+  </div>
+
+  <div class="resource-contents">
+    <h3>Šest otázek pro brokera</h3>
+    <p>Srovnání a modelový přepočet v jednom tisknutelném přehledu. K tomu čtyři vysvětlené pojmy, připravený text dotazu brokerovi a šest položek s místem pro odpověď, zdroj a datum:</p>
+    <ol class="question-topics">
+      <% for (const question of it.worksheet.questions) { %><li><%= question.title %></li><% } %>
+    </ol>
+    <p class="section-note">Vlastní ověření u brokera zůstává na vás. List organizuje otázky a doložené odpovědi; nepotvrzuje dostupnost ani vhodnost investice.</p>
+  </div>
+</section>
+
+<% if (it.contactEnabled) { %>
+<%~ include("worksheet/contact.eta") %>
+<% } else { %>
+<section class="notice" id="contact-step">
+  <h2>Prohlížíte si veřejný náhled.</h2>
+  <p>Sběr skutečných kontaktů je vypnutý. <a href="https://clientelo-experiment.onrender.com/etf">Celý postup můžete vyzkoušet s vymyšlenou adresou v ukázce.</a> Nic neposíláme; první načtení na bezplatném hostingu může trvat přibližně minutu.</p>
+</section>
+<% } %>
+
+<section class="sources" aria-labelledby="sources-heading">
+  <h2 id="sources-heading">Zdroje a hranice ověření</h2>
+  <ul>
+    <% for (const source of Object.values(it.data.sources)) { %>
+    <li><a href="<%= source.url %>"><%= source.label %></a><br>Stav podkladu: <%= it.date(source.asOf) %>; ověřeno: <%= it.date(source.retrievedOn) %>.</li>
+    <% } %>
+  </ul>
+  <p>Neověřili jsme váš účet ani možnost provést nákup SPY nebo VOO. Toto srovnání nehodnotí vaši finanční situaci ani vhodnost investice.</p>
+</section>
+
+<% if (it.qualification) { %>
+<section class="demo-details screen-only" id="demo-details" aria-labelledby="demo-heading">
+  <h2 id="demo-heading">O ukázce a načítání</h2>
+  <p>Ukázka pro hodnocení přijímá pouze vymyšlené adresy @example.test. Ukládá testovací žádost; nic neodesílá a neověřuje vlastnictví adresy. Skutečný sběr kontaktů zůstává vypnutý.</p>
+  <p>Bezplatný Render se po nečinnosti uspává. První načtení může trvat přibližně minutu; ukázka není připravena pro reklamní provoz. Po chybě zůstane adresa ve formuláři. Odemknutí listu vyžaduje potvrzené přijetí; opakovaný pokus nevytvoří druhý kontakt.</p>
+</section>
+<% } %>

@@ -1,4 +1,8 @@
+import { comparison } from "./etf-comparison";
+import { createExpenseExample } from "./fund-expenses";
+
 export const worksheet = {
+  expenseExample: createExpenseExample(comparison),
   questions: [
     {
       title: "Přesný produkt",

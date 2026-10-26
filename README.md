@@ -31,6 +31,8 @@ and sources, a glossary, fund identities and a draft message to a broker.
 The app uses native Strata startup, routing, validation, Eta views, cookies/CSRF,
 signed URLs, ORM repositories, transactions and migrations. Atomic database operations
 suppress concurrent duplicates and preserve the original acceptance and attribution.
+Contacts expose native `events()` and `journeyEvents()` relationships; each event exposes
+`contact()`, which returns no contact for a journey that has not accepted an address.
 Small JavaScript enhancements handle form feedback and measurement; the core form and
 worksheet also work without JavaScript.
 

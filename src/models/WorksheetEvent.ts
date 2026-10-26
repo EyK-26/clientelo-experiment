@@ -1,5 +1,6 @@
 import { defineModel } from "@getstrata/core/database/model";
 import { defineTable } from "@getstrata/core/database/table";
+import { WorksheetContact, type WorksheetContactRecord } from "./WorksheetContact";
 
 interface WorksheetEventRecord {
   id: string;
@@ -22,6 +23,14 @@ class WorksheetEvent extends defineModel(table) {
     "created_at",
   ] as const;
   static override $timestamps = false;
+
+  contact() {
+    return this.belongsTo<WorksheetContactRecord, "id">(
+      () => WorksheetContact,
+      "acceptance_id",
+      "id",
+    );
+  }
 }
 
 export type { WorksheetEventRecord };

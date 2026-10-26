@@ -1,5 +1,6 @@
 import { defineModel } from "@getstrata/core/database/model";
 import { defineTable } from "@getstrata/core/database/table";
+import { WorksheetContact, type WorksheetContactRecord } from "./WorksheetContact";
 export const journeyKinds = [
   "page_response_ready",
   "page_visible",
@@ -44,6 +45,14 @@ class WorksheetJourneyEvent extends defineModel(table) {
     "created_at",
   ] as const;
   static override $timestamps = false;
+
+  contact() {
+    return this.belongsTo<WorksheetContactRecord, "id">(
+      () => WorksheetContact,
+      "acceptance_id",
+      "id",
+    );
+  }
 }
 export type { WorksheetJourneyEventRecord };
 export { WorksheetJourneyEvent };

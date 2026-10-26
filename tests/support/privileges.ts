@@ -63,9 +63,10 @@ export async function verifyRuntimePrivileges() {
       await store.open(accepted.id);
       await store.open(accepted.id);
       await WorksheetContact.repository().query().where({ id: accepted.id }).update({ variant: "b" });
-      assert.equal((await WorksheetContact.find(accepted.id))!.toObject().variant, "b");
-      assert.equal((await WorksheetEvent.query().where({ acceptance_id: accepted.id }).get()).length, 2);
-      assert((await WorksheetJourneyEvent.query().where({ acceptance_id: accepted.id }).get()).length > 0);
+      const contact = (await WorksheetContact.find(accepted.id))!;
+      assert.equal(contact.toObject().variant, "b");
+      assert.equal(await contact.events().count(), 2);
+      assert((await contact.journeyEvents().count()) > 0);
       throw rollback;
     });
   } catch (error) {

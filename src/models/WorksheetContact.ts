@@ -1,5 +1,10 @@
 import { defineModel } from "@getstrata/core/database/model";
 import { defineTable } from "@getstrata/core/database/table";
+import { WorksheetEvent, type WorksheetEventRecord } from "./WorksheetEvent";
+import {
+  WorksheetJourneyEvent,
+  type WorksheetJourneyEventRecord,
+} from "./WorksheetJourneyEvent";
 
 interface WorksheetContactRecord {
   id: string;
@@ -24,6 +29,22 @@ class WorksheetContact extends defineModel(table) {
     "created_at",
   ] as const;
   static override $timestamps = false;
+
+  events() {
+    return this.hasMany<WorksheetEventRecord, "id">(
+      () => WorksheetEvent,
+      "acceptance_id",
+      "id",
+    );
+  }
+
+  journeyEvents() {
+    return this.hasMany<WorksheetJourneyEventRecord, "id">(
+      () => WorksheetJourneyEvent,
+      "acceptance_id",
+      "id",
+    );
+  }
 }
 
 export type { WorksheetContactRecord };

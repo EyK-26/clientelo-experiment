@@ -75,16 +75,9 @@ test("resource access requires committed contact and is a separate deduplicated 
   );
   const accepted = await store.accept(`${crypto.randomUUID()}@example.test`);
   await Promise.all(Array.from({ length: 4 }, () => store.open(accepted.id)));
-  expect(
-    await WorksheetEvent.query()
-      .where({ acceptance_id: accepted.id, kind: "accepted_new" })
-      .get(),
-  ).toHaveLength(1);
-  expect(
-    await WorksheetEvent.query()
-      .where({ acceptance_id: accepted.id, kind: "resource_open" })
-      .get(),
-  ).toHaveLength(1);
+  const contact = (await WorksheetContact.find(accepted.id))!;
+  expect(await contact.events().where({ kind: "accepted_new" }).count()).toBe(1);
+  expect(await contact.events().where({ kind: "resource_open" }).count()).toBe(1);
 });
 
 test("failed worksheet rendering does not record successful resource access", async () => {

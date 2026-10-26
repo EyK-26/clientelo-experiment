@@ -37,7 +37,13 @@ export class WorksheetStore {
         throw new Error(
           "Retained acceptance expired; deletion must complete before a new request",
         );
-      if (isNew) await this.record(contact.id, "accepted_new");
+      if (isNew) {
+        const acceptedContact = WorksheetContact.newFromRecord(contact);
+        await acceptedContact.events().create({
+          id: crypto.randomUUID(),
+          kind: "accepted_new",
+        });
+      }
       if (journey) {
         await WorksheetJourneyEvent.repository()
           .query()
@@ -55,7 +61,7 @@ export class WorksheetStore {
 
   async open(id: string): Promise<void> {
     await this.authorize(id);
-    await this.record(id, "resource_open");
+    await this.recordResourceOpen(id);
   }
 
   async authorize(id: string): Promise<void> {
@@ -72,12 +78,13 @@ export class WorksheetStore {
       throw new ForbiddenError("Acceptance not found");
   }
 
-  private async record(
-    acceptanceId: string,
-    kind: "accepted_new" | "resource_open",
-  ) {
+  private async recordResourceOpen(acceptanceId: string) {
     await WorksheetEvent.repository().upsert(
-      { id: crypto.randomUUID(), acceptance_id: acceptanceId, kind },
+      {
+        id: crypto.randomUUID(),
+        acceptance_id: acceptanceId,
+        kind: "resource_open",
+      },
       ["acceptance_id", "kind"],
       ["kind"],
     );

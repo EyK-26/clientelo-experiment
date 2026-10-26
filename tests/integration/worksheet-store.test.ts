@@ -42,6 +42,72 @@ test("concurrent admissions commit one contact and one accepted fact", async () 
       .get(),
   ).toHaveLength(0);
 });
+
+test("only the winning acceptance creates an event through the native model lifecycle", async () => {
+  const acceptanceIds: string[] = [];
+  let observing = true;
+  WorksheetEvent.observe({
+    creating(event) {
+      if (observing && event.get("kind") === "accepted_new")
+        acceptanceIds.push(String(event.get("acceptance_id")));
+    },
+  });
+  try {
+    const email = `${crypto.randomUUID()}@example.test`;
+    const results = await Promise.all(
+      Array.from({ length: 12 }, () => store.accept(email, "a")),
+    );
+    expect(results.filter(result => result.isNew)).toHaveLength(1);
+    expect(acceptanceIds).toEqual([results[0]!.id]);
+    const contact = (await WorksheetContact.find(results[0]!.id))!;
+    expect(await contact.events().count()).toBe(1);
+  } finally {
+    observing = false;
+  }
+});
+
+test.each(["cancel", "created failure"] as const)(
+  "native event %s rolls back the contact and its facts",
+  async failure => {
+    const email = `${crypto.randomUUID()}@example.test`;
+    const journey = { id: crypto.randomUUID(), variant: "a" as const };
+    let acceptanceId = "";
+    let observing = true;
+    WorksheetEvent.observe({
+      creating(event) {
+        if (!observing || event.get("kind") !== "accepted_new") return;
+        acceptanceId = String(event.get("acceptance_id"));
+        if (failure === "cancel") return false;
+      },
+      created(event) {
+        if (
+          observing &&
+          event.get("kind") === "accepted_new" &&
+          failure === "created failure"
+        )
+          throw new Error("controlled event observer failure");
+      },
+    });
+    try {
+      await expect(store.accept(email, "a", journey)).rejects.toThrow(
+        failure === "cancel"
+          ? "cancelled by an observer"
+          : "controlled event observer failure",
+      );
+      expect(acceptanceId).not.toBe("");
+      expect(await WorksheetContact.query().where({ email }).get()).toHaveLength(0);
+      expect(await WorksheetEvent.query().where({ acceptance_id: acceptanceId }).get())
+        .toHaveLength(0);
+      const { WorksheetJourneyEvent } =
+        await import("../../src/models/WorksheetJourneyEvent");
+      expect(await WorksheetJourneyEvent.query().where({ journey_id: journey.id }).get())
+        .toHaveLength(0);
+    } finally {
+      observing = false;
+    }
+  },
+);
+
 test("lost response retry preserves original identity, attribution and timestamp", async () => {
   const email = `${crypto.randomUUID()}@example.test`;
   const first = await store.accept(email, "a");

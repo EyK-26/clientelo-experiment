@@ -33,6 +33,8 @@ signed URLs, ORM repositories, transactions and migrations. Atomic database oper
 suppress concurrent duplicates and preserve the original acceptance and attribution.
 Contacts expose native `events()` and `journeyEvents()` relationships; each event exposes
 `contact()`, which returns no contact for a journey that has not accepted an address.
+The winning acceptance creates its first event through `contact.events().create()` in
+the same transaction; repeated resource opens use an atomic upsert.
 Small JavaScript enhancements handle form feedback and measurement; the core form and
 worksheet also work without JavaScript.
 

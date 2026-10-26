@@ -97,6 +97,14 @@ credentials. Administrative and deletion credentials must never enter the web se
 or image. Migrations do not run during HTTP startup. Empty worksheet tables are healthy;
 missing or inaccessible tables fail readiness.
 
+Worksheet reads and writes use native models, relationships, repositories and
+transactions. Explicit SQL remains for PostgreSQL role/grant administration, the
+static connectivity probe, unchanged applied starter migrations and infrastructure
+tests (catalog inspection, negative permission probes, schema namespaces and table
+renames). The grant policy validates and quotes role names; tests quote generated
+schema/table identifiers. Schema-builder operations are used where supported.
+Atomic upserts and batch retention deletes remain native repository operations.
+
 The separate `worksheet:prune` CLI command deletes expired data using a deletion
 identity. No automatic deletion schedule is enabled. For deployment rollback, select
 a known-good image compatible with the current schema; an app rollback does not restore

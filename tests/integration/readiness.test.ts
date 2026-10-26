@@ -4,6 +4,8 @@ import { SQL } from "bun";
 import { worksheetFixture } from "../support/worksheet";
 import { closeDatabase } from "../../src/bootstrap/database";
 import { runInTransaction } from "@getstrata/core/database/transaction";
+import { quoteIdentifier } from "@getstrata/core/database/query";
+import { Schema, resolveDatabaseDriver } from "@getstrata/core/database/schema";
 import { worksheetSchemaReady } from "../../src/bootstrap/readiness";
 
 const tables = ["worksheet_contact", "worksheet_event", "worksheet_journey_event"];
@@ -29,18 +31,22 @@ test("readiness accepts empty worksheet tables and fails for each missing or ina
     });
     for (const table of tables) {
       // Only isolated fixture tables are renamed; original grants/rows are retained.
-      await owner.unsafe(`ALTER TABLE ${table} RENAME TO readiness_saved`);
+      await owner.unsafe(`ALTER TABLE ${quoteIdentifier(table)} RENAME TO readiness_saved`);
       try {
         expect((await health()).status).toBe(503);
         // A same-name owner-only table distinguishes inaccessible from absent schema.
-        await owner.unsafe(`CREATE TABLE ${table} (id uuid PRIMARY KEY)`);
+        await Schema.run(owner, resolveDatabaseDriver(), schema => {
+          schema.create(table, definition => definition.uuid("id").primary());
+        });
         try {
           expect((await health()).status).toBe(503);
         } finally {
-          await owner.unsafe(`DROP TABLE ${table}`);
+          await Schema.run(owner, resolveDatabaseDriver(), schema => {
+            schema.drop(table);
+          });
         }
       } finally {
-        await owner.unsafe(`ALTER TABLE readiness_saved RENAME TO ${table}`);
+        await owner.unsafe(`ALTER TABLE readiness_saved RENAME TO ${quoteIdentifier(table)}`);
       }
       expect((await health()).status).toBe(200);
     }

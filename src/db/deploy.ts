@@ -2,16 +2,18 @@
 import { SQL } from "bun";
 import { loadMigrationsFromDirectory, migrateDatabase } from "@getstrata/core/database/migrations";
 import type { MigrationDatabase } from "@getstrata/core/database/migrations/types";
+import { quoteIdentifier } from "@getstrata/core/database/query";
 
 export async function applyRuntimeGrants(db: MigrationDatabase, role: string) {
   if (!/^[a-z_][a-z0-9_]*$/.test(role)) throw new Error("Invalid runtime role name.");
+  const identifier = quoteIdentifier(role);
   // Authorization SQL is application policy, not schema/ORM emulation.
-  await db.unsafe(`REVOKE CREATE ON SCHEMA public FROM PUBLIC, ${role}`);
-  await db.unsafe(`GRANT USAGE ON SCHEMA public TO ${role}`);
-  await db.unsafe(`REVOKE ALL ON ALL TABLES IN SCHEMA public FROM ${role}`);
-  await db.unsafe(`REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM ${role}`);
+  await db.unsafe(`REVOKE CREATE ON SCHEMA public FROM PUBLIC, ${identifier}`);
+  await db.unsafe(`GRANT USAGE ON SCHEMA public TO ${identifier}`);
+  await db.unsafe(`REVOKE ALL ON ALL TABLES IN SCHEMA public FROM ${identifier}`);
+  await db.unsafe(`REVOKE ALL ON ALL SEQUENCES IN SCHEMA public FROM ${identifier}`);
   await db.unsafe(
-    `GRANT SELECT,INSERT,UPDATE ON worksheet_contact,worksheet_event,worksheet_journey_event TO ${role}`,
+    `GRANT SELECT,INSERT,UPDATE ON worksheet_contact,worksheet_event,worksheet_journey_event TO ${identifier}`,
   );
 }
 

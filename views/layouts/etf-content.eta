@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title><%= it.layout.title %> · Investiční přehled</title>
+<link rel="stylesheet" href="<%= it.layout.stylesheet ?? '/assets/etf.css' %>">
+</head>
+<body>
+<header><strong>Investiční přehled</strong><small>Osobní demonstrace<br>Vzdělávací srovnání</small></header>
+<a class="skip-link" href="#main-content">Přejít k obsahu</a>
+<% if (it.eventsUrl) { %><div hidden id="worksheet-journey" data-journey-events="<%= it.eventsUrl %>" data-csrf="<%= it.csrfToken %>" data-resource="<%= it.backUrl ? '1' : '0' %>"></div><script src="/assets/worksheet-events.js" defer></script><% } %>
+<main id="main-content"><%~ it.body %></main>
+<footer>Vzdělávací srovnání. Nejde o osobní doporučení ani potvrzení dostupnosti u vašeho brokera. </footer>
+</body></html>

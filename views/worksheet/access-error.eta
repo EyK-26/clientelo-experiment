@@ -1,0 +1,1 @@
+<section class="contact-card"><h1>Odkaz není platný nebo jeho platnost vypršela</h1><p>Pracovní list se nezpřístupnil. Vraťte se k formuláři a odešlete žádost znovu. Nový odkaz se zobrazí až po úspěšném potvrzení žádosti.</p><a class="action" href="<%= it.formPath %>#contact-step">Získat nový odkaz</a></section>

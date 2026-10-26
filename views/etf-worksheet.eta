@@ -1,0 +1,18 @@
+<section class="worksheet-intro">
+  <% if (it.qualification) { %><p class="notice screen-only">Ukázka pro hodnocení: list jsme zpřístupnili po uložení ukázkové žádosti. Nic na adresu neposíláme a neověřujeme, komu patří.</p><% } %>
+  <p class="screen-only eyebrow">PRACOVNÍ LIST · SPY / VOO</p>
+  <h1>SPY a VOO: srovnávací list a otázky pro vašeho brokera</h1>
+  <div class="screen-only actions"><button type="button" data-print-worksheet>Tisk / uložit do PDF</button><a href="<%= it.backUrl ?? '/etf' %>"><%= it.backLabel ?? 'Zpět na srovnání' %></a></div>
+  <p class="screen-only">V dialogu tisku vyberte „Uložit jako PDF“, formát A4 a vypněte záhlaví a zápatí prohlížeče. Bez JavaScriptu použijte Ctrl+P nebo ⌘P. Tisknutí neověřuje možnost fond koupit.</p>
+  <p class="notice">Vzdělávací pomůcka. Nejde o doporučení k nákupu, úplný seznam rizik ani potvrzení dostupnosti pro váš účet. Nový nákup může být omezen podmínkami brokera a dokumentem KID.</p>
+  <div class="funds"><% for (const fund of it.data.funds) { %><article><h2><%= fund.ticker %></h2><p><%= fund.name.value %><br>Index: <%= fund.benchmark.value %><br>Roční nákladový poměr: <strong><%= fund.expense.value.replace('.', ',') %> %</strong><br>Primární burza: <%= fund.venue.value %><br>CUSIP: <%= fund.cusip.value %></p><small><%= fund.expense.basis %><br><a href="<%= it.data.sources[fund.expense.source].url %>">Přehled emitenta, <%= it.date(fund.expense.asOf) %></a><br><a href="<%= it.data.sources[fund.venue.source].url %>">Kotace, stav <%= it.date(fund.venue.asOf) %></a></small></article><% } %></div>
+  <h2>Čtyři pojmy bez zkratek navíc</h2><dl class="glossary"><% for (const term of it.worksheet.terms) { %><div><dt><%= term.title %></dt><dd><%= term.text %></dd></div><% } %></dl>
+  <p><small>Zdroje ověřeny 25. 10. 2026. Přehledy nákladů k 30. 9. 2026; samostatná data účinnosti poplatků nejsou v podkladech sjednocená.</small></p>
+</section>
+<section class="broker-page"><h2>Šest otázek pro brokera</h2><p>Broker / právní subjekt / typ účtu: ______________________________<br>Datum ověření: ______________________________</p>
+  <% for (const [index, question] of it.worksheet.questions.entries()) { %><div class="question"><h3><%= index + 1 %>. <%= question.title %></h3><p><%= question.text %></p><div class="answer">Odpověď / neověřeno · zdroj · datum:</div></div><% } %>
+  <p><small>Neověřenou odpověď nechte označenou jako neověřenou. Vyplněný list nenahrazuje posouzení rizik ani osobní vhodnosti investice.</small></p>
+</section>
+<section><h2>Text dotazu k úpravě</h2><blockquote><%= it.worksheet.brokerMessage %></blockquote><p>Do veřejných souborů ani cizích formulářů nekopírujte číslo účtu, přihlašovací údaje nebo soukromé portfolio.</p></section>
+<section class="sources"><h2>Zdroje a hranice ověření</h2><ul><% for (const source of Object.values(it.data.sources)) { %><li><a href="<%= source.url %>"><%= source.label %></a><br><span class="print-url"><%= source.url %></span><br>Stav podkladu: <%= it.date(source.asOf) %>; ověřeno: <%= it.date(source.retrievedOn) %>.</li><% } %></ul><p>LYNX popisuje obecná omezení nových nákupů amerických ETF pro neprofesionální klienty. Neprovedli jsme kontrolu konkrétního účtu ani pokyn k nákupu SPY nebo VOO.</p></section>
+<script src="<%= it.printScript ?? '/assets/worksheet-print.js' %>" defer></script>

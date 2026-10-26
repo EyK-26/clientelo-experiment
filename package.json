@@ -1,0 +1,33 @@
+{
+  "name": "investicni-prehled",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "strata dev",
+    "start": "strata start",
+    "db:migrate": "strata migrate",
+    "check": "tsc --noEmit",
+    "test": "bun test ./tests/unit",
+    "test:integration": "bun tests/support/run-integration.ts",
+    "test:container": "bun tests/integration/container.ts",
+    "test:browser:serve": "bun tests/browser/serve.ts --delayed"
+  },
+  "engines": {
+    "bun": ">=1.4.4"
+  },
+  "overrides": {
+    "bun-types": "1.4.4"
+  },
+  "dependencies": {
+    "@getstrata/bootstrap": "2.2.59",
+    "@getstrata/cli": "2.2.59",
+    "@getstrata/core": "2.2.59",
+    "eta": "4.6.0"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.4",
+    "typescript": "7.0.2"
+  },
+  "packageManager": "bun@1.4.4"
+}

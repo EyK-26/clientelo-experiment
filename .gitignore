@@ -1,0 +1,18 @@
+# Local operator credentials and recovery snapshots. Never commit or package these.
+/.private/
+
+# Native Strata application artifacts and local configuration.
+node_modules
+.env
+.env.local
+dist
+frontend/dist
+storage/*.sqlite
+storage/*.sqlite-journal
+storage/*.sqlite-wal
+storage/*.sqlite-shm
+coverage
+*.tsbuildinfo
+
+.env.*
+!.env.example

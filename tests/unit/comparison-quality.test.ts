@@ -1,0 +1,10 @@
+import {expect,test} from 'bun:test';
+import {assertComparison,comparison} from '../../src/content/etf-comparison';
+const fresh=()=>structuredClone(comparison);
+test('dated sourced pair accepts unknown account accessibility',()=>{expect(()=>assertComparison(fresh())).not.toThrow();});
+test('a populated fact without a source must not be published',()=>{const c=fresh();c.funds[0]!.cusip.source='missing';expect(()=>assertComparison(c)).toThrow('missing_source');});
+test('annual expense comparisons require matched document dates',()=>{const c=fresh();c.funds[1]!.expense.asOf='2026-10-01';expect(()=>assertComparison(c)).toThrow('unaligned_cost_dates');});
+test('evidence cannot postdate its retrieval',()=>{const c=fresh();c.funds[0]!.venue.asOf='2026-10-26';expect(()=>assertComparison(c)).toThrow('future_evidence');});
+test('an annual percentage must carry its unit',()=>{const c=fresh();(c.funds[0]!.expense as {unit:string}).unit='fraction';expect(()=>assertComparison(c)).toThrow('expense_unit');});
+test('published broker policy is not account-specific buyability proof',()=>{const c=fresh();c.broker.buyable=true;expect(()=>assertComparison(c)).toThrow('unverified_access_claim');});
+test('evidence links must be HTTPS',()=>{const c=fresh();c.sources.spySheet!.url='javascript:alert(1)';expect(()=>assertComparison(c)).toThrow('invalid_source_url');});

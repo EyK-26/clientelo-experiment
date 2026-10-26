@@ -51,7 +51,7 @@ test("seven-day cutoff removes expired contacts and associated facts using only 
     acceptanceId: expired.id,
   });
   await runInTransaction(
-    async (connection) => {
+    async () => {
       const result = await purgeExpiredWorksheetContacts(now);
       expect(result.contacts).toBe(1);
     },
@@ -83,7 +83,7 @@ test("outer rollback restores both contact and facts after deletion", async () =
     .update({ created_at: new Date("2026-01-01T00:00:00Z") });
   await expect(
     runInTransaction(
-      async (connection) => {
+      async () => {
         await purgeExpiredWorksheetContacts(new Date("2026-10-26T08:00:00Z"));
         throw new Error("controlled rollback");
       },

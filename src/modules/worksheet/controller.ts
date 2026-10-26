@@ -94,7 +94,6 @@ export class WorksheetController {
         data: comparison,
         worksheet,
         date,
-        localReview: false,
         contactEnabled: true,
         qualification: this.mode === "qualification",
         notice: this.options.notice,
@@ -217,7 +216,6 @@ export class WorksheetController {
         data: comparison,
         worksheet,
         date,
-        localReview: false,
         qualification: this.mode === "qualification",
         eventsUrl: context
           ? temporarySignedUrl(this.eventsPath, 600, {

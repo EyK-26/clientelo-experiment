@@ -72,8 +72,7 @@ input:focus-visible {
   outline: 3px solid #be6a2e;
   outline-offset: 4px;
 }
-.eyebrow,
-.draft {
+.eyebrow {
   font-size: 13px;
   color: var(--muted);
 }
@@ -424,9 +423,6 @@ footer {
   max-width: 650px;
   font-size: 18px;
 }
-.hero > .action {
-  margin: 4px 0 22px;
-}
 .access-warning p {
   margin: 8px 0 0;
 }
@@ -455,17 +451,6 @@ summary {
 summary:focus-visible {
   outline: 3px solid #be6a2e;
   outline-offset: 4px;
-}
-.sample-number {
-  font-size: 13px;
-  color: var(--muted);
-}
-.question-sample h3 {
-  font-size: 21px;
-}
-.question-sample .answer {
-  min-height: 110px;
-  line-height: 1.8;
 }
 .contact-card {
   max-width: none;
@@ -505,8 +490,7 @@ summary:focus-visible {
   }
 }
 @media print {
-  .skip-link,
-  .print-hidden {
+  .skip-link {
     display: none !important;
   }
   .contact-card {
@@ -528,9 +512,6 @@ summary:focus-visible {
   }
   .funds h3 {
     font-size: 14pt;
-  }
-  .question-sample .answer {
-    min-height: 20mm;
   }
   .broker-page .question {
     margin-top: 3mm;

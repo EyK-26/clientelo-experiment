@@ -15,7 +15,6 @@ const site: AppModule = {
         {
           data: comparison,
           worksheet,
-          localReview: false,
           date: (value: string | null) =>
             value
               ? value.split("-").reverse().map(Number).join(". ")

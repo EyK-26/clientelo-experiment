@@ -16,4 +16,4 @@
 </section>
 <section><h2>Text dotazu k úpravě</h2><blockquote><%= it.worksheet.brokerMessage %></blockquote><p>Do veřejných souborů ani cizích formulářů nekopírujte číslo účtu, přihlašovací údaje nebo soukromé portfolio.</p></section>
 <section class="sources"><h2>Zdroje a hranice ověření</h2><ul><% for (const source of Object.values(it.data.sources)) { %><li><a href="<%= source.url %>"><%= source.label %></a><br><span class="print-url"><%= source.url %></span><br>Stav podkladu: <%= it.date(source.asOf) %>; ověřeno: <%= it.date(source.retrievedOn) %>.</li><% } %></ul><p>LYNX popisuje obecná omezení nových nákupů amerických ETF pro neprofesionální klienty. Neprovedli jsme kontrolu konkrétního účtu ani pokyn k nákupu SPY nebo VOO.</p></section>
-<script src="<%= it.printScript ?? '/assets/worksheet-print.js' %>" defer></script>
+<script src="/assets/worksheet-print.js" defer></script>

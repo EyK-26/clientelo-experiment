@@ -91,10 +91,6 @@ export async function bootstrapApp(options: BootstrapOptions = {}): Promise<Boot
   }
 }
 
-export async function createApp(options: BootstrapOptions = {}) {
-  return bootstrapApp({ migrate: false, ...options });
-}
-
 export function createAppServer(routes: AppRouteMap, port = 0, lifecycle?: LifecycleCoordinator, native?: NativeServerOptions) {
   return createWebServer({
     port,
@@ -104,5 +100,3 @@ export function createAppServer(routes: AppRouteMap, port = 0, lifecycle?: Lifec
     routes,
   });
 }
-
-export { createAppContext };

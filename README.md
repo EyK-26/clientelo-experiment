@@ -102,8 +102,8 @@ mail or hosting credentials. The committed production `.env.example` remains sep
 Run database suites sequentially and stop the browser fixture before another suite;
 they create and remove their own tables in `clientelo_native_test`. A port conflict
 should be resolved before startup, without repointing the tests at another database.
-`bun run check` typechecks application code and TypeScript tests. The intentionally
-failing framework type reproduction is stored as a text fixture under tests/support.
+`bun run check` typechecks application code and TypeScript tests and rejects unused
+local declarations and parameters.
 Use `bun run test` for unit tests; do not run recursive `bun test tests`, which would
 mix database fixtures. Automated browser instructions are in
 [tests/browser/worksheet.mjs](tests/browser/worksheet.mjs).
@@ -185,32 +185,20 @@ Three A/B hypotheses, ranked by expected impact:
 
 ## Verification and limitations
 
-Local tests, typecheck and production-container checks pass. Hosted checks cover
-validation, CSRF/origin rejection, input retention, synthetic-only admission, concurrent
-duplicates, lost-response recovery, signed access, print invocation and persistence
-after redeployment. Mobile layouts were checked at 360/390/430/1280px; the 390px view
-was visually inspected. PDF generation was exercised.
+The checks above cover startup, source quality, calculations, validation, CSRF, retained
+input, signed access, duplicate recovery, transactions, retention and restricted database
+privileges. The container suite checks native startup, assets, concurrent submissions and
+persistence across fresh containers. Browser checks cover the enhanced and no-JavaScript
+journeys; print attempts do not establish a saved PDF or physical print.
 
-Real collection remains disabled pending operator/privacy details and an approved
-collection purpose, access and retention arrangements. Render's wake delay remains a
-conversion limitation. Native Czech approval, physical-phone testing and account-specific
-broker access are unverified. Synthetic checks are not campaign results, email
-verification, physical printing or advertising-readiness evidence.
+This cleanup branch has not been deployed. Previous hosted observations do not qualify
+its current revision. A fresh PDF inspection, native Czech approval, physical-phone testing
+and account-specific broker access remain unverified.
 
-The current local refinement passed 37 unit tests, 36 sequential integration tests,
-typecheck and the production-container checks using only the supplied disposable setup.
-Browser inspection covered 360/390/430px and desktop, including retained input,
-controlled response loss, safe retry and the revised resource. The primary action is
-visible without scrolling at 360px. Native print was invoked, but saving and inspecting
-a new PDF was not completed through the available browser controls. This local revision
-has not been pushed or deployed; earlier hosted observations are not proof of these changes.
+Real collection remains disabled pending operator/privacy details, a genuine collection
+purpose and approved access/retention arrangements. Synthetic checks are not campaign
+results or email verification. Genuine AI conversation exports are absent from this
+checkout; edited examples are not a substitute for authentic exports.
 
-The interface now explains the requested resource and immediate web fulfillment, but
-it does not invent an operator identity, permission to contact people later or a legal
-basis for collecting real addresses. Those decisions remain required before a public
-lead release. No marketing enrollment or email-delivery promise is introduced.
-
-Render's initial wake page is served before this application's code runs. Changing CSS,
-form feedback or moving disclosures cannot remove that platform delay. This pass keeps
-the existing free host and adds no keepalive traffic, paid plan or unqualified hosting
-replacement. Public acquisition performance remains an explicit limitation.
+Render's wake page appears before the application runs. CSS or form feedback cannot remove
+that platform delay; the existing free deployment remains unsuitable for advertising.

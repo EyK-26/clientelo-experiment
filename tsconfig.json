@@ -4,12 +4,13 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "types": ["bun"],
     "lib": ["ES2022", "DOM"]
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "strata.config.ts"],
-  "exclude": ["tests/support/relationship-types.repro.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "strata.config.ts"]
 }

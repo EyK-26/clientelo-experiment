@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title><%= it.layout.title %> · Investiční přehled</title>
-<link rel="stylesheet" href="<%= it.layout.stylesheet ?? '/assets/etf.css' %>">
+<link rel="stylesheet" href="/assets/etf.css">
 </head>
 <body>
 <header><strong>Investiční přehled</strong><small>Osobní demonstrace<br>Vzdělávací srovnání</small></header>

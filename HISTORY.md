@@ -24,12 +24,13 @@ Commit objects were created during consolidation, without backdating them.
 ## Verification and evidence
 
 Each imported or replayed application tree was checked against its source tree.
-The final application content matches the source snapshot exactly. This file is
-the only additional tracked file in the final branch.
+At consolidation commit `a287999`, application content matched the source snapshot
+exactly; this file was the only addition. Subsequent commits contain new cleanup
+work and describe their own changes and verification.
 
-This history-only consolidation did not rerun application tests and does not
-establish when tests were first written. Historical test and deployment reports
-retain their original scope; they are not new results from this operation.
+The initial history-only consolidation did not rerun application tests or establish
+when tests were first written. Later checks do not retroactively change historical
+test or deployment evidence.
 
 Original conversation exports, edited excerpts and newly drafted example
 conversations are different kinds of material. An edited or example conversation
